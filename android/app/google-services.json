@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "459359176503",
+    "project_id": "music-box-aa4ef",
+    "storage_bucket": "music-box-aa4ef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:459359176503:android:40862e79d8a7ea08413cb2",
+        "android_client_info": {
+          "package_name": "com.example.music_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "459359176503-6v6gvba4as7j14qob4d2oa9k5gbc7k3u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXtsQtxVLpW8VtEeyB9XU9xXy5VXe21HA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "459359176503-6v6gvba4as7j14qob4d2oa9k5gbc7k3u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

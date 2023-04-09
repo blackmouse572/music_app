@@ -1,9 +1,11 @@
 //Route system
 import 'package:flutter/material.dart';
 import 'package:music_app/pages/home_page.dart';
+import 'package:music_app/pages/login_page.dart';
 import 'package:music_app/pages/package.dart';
 import 'package:music_app/pages/playlist.dart';
 import 'package:music_app/pages/purchased_page.dart';
+import 'package:music_app/pages/register_page.dart';
 import 'package:music_app/pages/track.dart';
 
 //Implement: https://flutter.dev/docs/cookbook/navigation/named-routes
@@ -13,6 +15,8 @@ class Routes {
   static const String track = '/track';
   static const String package = '/package';
   static const String purchased = '/purchased';
+  static const String login = '/login';
+  static const String register = '/register';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -38,6 +42,7 @@ class Routes {
         );
       case package:
         return MaterialPageRoute(builder: (_) => const Package());
+
       case purchased:
         return PageRouteBuilder(
           pageBuilder: (_, __, ___) => const PurchasedPage(),
@@ -48,6 +53,10 @@ class Routes {
             child: child,
           ),
         );
+      case login:
+        return MaterialPageRoute(builder: (_) => const LoginPage());
+      case register:
+        return MaterialPageRoute(builder: (_) => const RegisterPage());
       default:
         return MaterialPageRoute(builder: (_) => const HomePage());
     }

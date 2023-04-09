@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:music_app/firebase_options.dart';
 import 'package:music_app/pages/home_page.dart';
 import 'package:music_app/pages/purchased_page.dart';
+import 'package:music_app/pages/user_page.dart';
 import 'package:music_app/routes.dart';
 import 'package:music_app/theme.dart';
 
@@ -42,6 +43,7 @@ class _AppScaffoldState extends ConsumerState<AppScaffold> {
   final List<Widget> _pages = const <Widget>[
     HomePage(),
     PurchasedPage(),
+    UserPage(),
   ];
   final List<BottomNavigationBarItem> items = const [
     BottomNavigationBarItem(
@@ -51,6 +53,10 @@ class _AppScaffoldState extends ConsumerState<AppScaffold> {
     BottomNavigationBarItem(
       icon: Icon(Icons.favorite),
       label: "Purchased",
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.person),
+      label: "User",
     ),
   ];
   void changePage(int index) {

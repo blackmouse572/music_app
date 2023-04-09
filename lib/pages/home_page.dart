@@ -3,9 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:music_app/models/package.model.dart';
 import 'package:music_app/models/playlist.model.dart';
 import 'package:music_app/providers/audio-player.provider.dart';
+import 'package:music_app/providers/auth.provider.dart';
 import 'package:music_app/providers/packages.provider.dart';
 import 'package:music_app/providers/pick-playlist.provider.dart';
 import 'package:music_app/providers/purchased.provider.dart';
+import 'package:music_app/routes.dart';
 import 'package:music_app/theme.dart';
 import 'package:music_app/widgets/BottomPlayBar.dart';
 
@@ -15,14 +17,21 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final unlockPackages = ref.watch(unlockPackagesNotifierProvider);
+    final isAuth = ref.watch(authControllerProvider).isAuth;
     final unlock =
         ref.watch(unlockPackagesNotifierProvider.notifier).unlockPackage;
     void _onTap(Package package) {
-      if (!unlockPackages.contains(package)) {
+      if (!isAuth) {
+        _showUnlockDialog(context, () {
+          Navigator.pushNamed(context, Routes.login);
+        }, "Bạn cần đăng nhập để xem nội dung package và nghe playlist này",
+            "Đăng nhập");
+      } else if (!unlockPackages.contains(package)) {
         //If the package is not unlocked, show the alert
         _showUnlockDialog(context, () {
           unlock(package);
-        });
+        }, "Bạn cần mua gói để xem nội dung package và nghe playlist này",
+            "Mua ngay");
       } else {
         ref.read(pickPlaylistProvider.notifier).setPackage(package);
         Navigator.pushNamed(context, "/package");
@@ -30,10 +39,16 @@ class HomePage extends ConsumerWidget {
     }
 
     void _onTapPlaylist(Playlist playlist, Package package) {
-      if (!unlockPackages.contains(package)) {
+      if (!isAuth) {
+        _showUnlockDialog(context, () {
+          Navigator.pushNamed(context, Routes.login);
+        }, "Bạn cần đăng nhập để xem nội dung package và nghe playlist này",
+            "Đăng nhập");
+      } else if (!unlockPackages.contains(package)) {
         _showUnlockDialog(context, () {
           unlock(package);
-        });
+        }, "Bạn cần mua gói để xem nội dung package và nghe playlist này",
+            "Mua ngay");
       } else {
         ref.read(pickPlaylistProvider.notifier).setPlaylist(playlist);
         Navigator.pushNamed(context, "/playlist");
@@ -224,7 +239,8 @@ class HomePage extends ConsumerWidget {
   }
 }
 
-Future<void> _showUnlockDialog(BuildContext context, VoidCallback onUnlock) {
+Future<void> _showUnlockDialog(BuildContext context, VoidCallback onUnlock,
+    String title, String content) async {
   return showDialog(
     context: context,
     builder: (context) {
@@ -241,9 +257,7 @@ Future<void> _showUnlockDialog(BuildContext context, VoidCallback onUnlock) {
         ),
         title: Align(
           alignment: Alignment.center,
-          child: Text(
-              "Bạn cần mua gói để xem nội dung package và nghe playlist này",
-              style: Theme.of(context).textTheme.bodyMedium),
+          child: Text(title, style: Theme.of(context).textTheme.bodyMedium),
         ),
         actions: [
           Row(
@@ -254,7 +268,7 @@ Future<void> _showUnlockDialog(BuildContext context, VoidCallback onUnlock) {
                   Navigator.of(context).pop();
                   onUnlock();
                 },
-                child: Text("Nâng cấp",
+                child: Text(content,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Primary.primary500,
                           fontWeight: FontWeight.w600,

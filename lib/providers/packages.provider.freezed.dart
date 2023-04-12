@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$PackagesState {
   List<Package> get packages => throw _privateConstructorUsedError;
+  List<Package> get unlockedPackages => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isErrored => throw _privateConstructorUsedError;
   String get errorMessage => throw _privateConstructorUsedError;
@@ -34,6 +35,7 @@ abstract class $PackagesStateCopyWith<$Res> {
   @useResult
   $Res call(
       {List<Package> packages,
+      List<Package> unlockedPackages,
       bool isLoading,
       bool isErrored,
       String errorMessage});
@@ -53,6 +55,7 @@ class _$PackagesStateCopyWithImpl<$Res, $Val extends PackagesState>
   @override
   $Res call({
     Object? packages = null,
+    Object? unlockedPackages = null,
     Object? isLoading = null,
     Object? isErrored = null,
     Object? errorMessage = null,
@@ -61,6 +64,10 @@ class _$PackagesStateCopyWithImpl<$Res, $Val extends PackagesState>
       packages: null == packages
           ? _value.packages
           : packages // ignore: cast_nullable_to_non_nullable
+              as List<Package>,
+      unlockedPackages: null == unlockedPackages
+          ? _value.unlockedPackages
+          : unlockedPackages // ignore: cast_nullable_to_non_nullable
               as List<Package>,
       isLoading: null == isLoading
           ? _value.isLoading
@@ -88,6 +95,7 @@ abstract class _$$_PackagesStateCopyWith<$Res>
   @useResult
   $Res call(
       {List<Package> packages,
+      List<Package> unlockedPackages,
       bool isLoading,
       bool isErrored,
       String errorMessage});
@@ -105,6 +113,7 @@ class __$$_PackagesStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? packages = null,
+    Object? unlockedPackages = null,
     Object? isLoading = null,
     Object? isErrored = null,
     Object? errorMessage = null,
@@ -113,6 +122,10 @@ class __$$_PackagesStateCopyWithImpl<$Res>
       packages: null == packages
           ? _value._packages
           : packages // ignore: cast_nullable_to_non_nullable
+              as List<Package>,
+      unlockedPackages: null == unlockedPackages
+          ? _value._unlockedPackages
+          : unlockedPackages // ignore: cast_nullable_to_non_nullable
               as List<Package>,
       isLoading: null == isLoading
           ? _value.isLoading
@@ -135,10 +148,12 @@ class __$$_PackagesStateCopyWithImpl<$Res>
 class _$_PackagesState implements _PackagesState {
   const _$_PackagesState(
       {required final List<Package> packages,
+      required final List<Package> unlockedPackages,
       required this.isLoading,
       required this.isErrored,
       required this.errorMessage})
-      : _packages = packages;
+      : _packages = packages,
+        _unlockedPackages = unlockedPackages;
 
   final List<Package> _packages;
   @override
@@ -146,6 +161,15 @@ class _$_PackagesState implements _PackagesState {
     if (_packages is EqualUnmodifiableListView) return _packages;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_packages);
+  }
+
+  final List<Package> _unlockedPackages;
+  @override
+  List<Package> get unlockedPackages {
+    if (_unlockedPackages is EqualUnmodifiableListView)
+      return _unlockedPackages;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_unlockedPackages);
   }
 
   @override
@@ -157,7 +181,7 @@ class _$_PackagesState implements _PackagesState {
 
   @override
   String toString() {
-    return 'PackagesState(packages: $packages, isLoading: $isLoading, isErrored: $isErrored, errorMessage: $errorMessage)';
+    return 'PackagesState(packages: $packages, unlockedPackages: $unlockedPackages, isLoading: $isLoading, isErrored: $isErrored, errorMessage: $errorMessage)';
   }
 
   @override
@@ -166,6 +190,8 @@ class _$_PackagesState implements _PackagesState {
         (other.runtimeType == runtimeType &&
             other is _$_PackagesState &&
             const DeepCollectionEquality().equals(other._packages, _packages) &&
+            const DeepCollectionEquality()
+                .equals(other._unlockedPackages, _unlockedPackages) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.isErrored, isErrored) ||
@@ -178,6 +204,7 @@ class _$_PackagesState implements _PackagesState {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_packages),
+      const DeepCollectionEquality().hash(_unlockedPackages),
       isLoading,
       isErrored,
       errorMessage);
@@ -192,12 +219,15 @@ class _$_PackagesState implements _PackagesState {
 abstract class _PackagesState implements PackagesState {
   const factory _PackagesState(
       {required final List<Package> packages,
+      required final List<Package> unlockedPackages,
       required final bool isLoading,
       required final bool isErrored,
       required final String errorMessage}) = _$_PackagesState;
 
   @override
   List<Package> get packages;
+  @override
+  List<Package> get unlockedPackages;
   @override
   bool get isLoading;
   @override

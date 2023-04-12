@@ -6,7 +6,7 @@ import 'package:music_app/providers/audio-player.provider.dart';
 import 'package:music_app/providers/auth.provider.dart';
 import 'package:music_app/providers/packages.provider.dart';
 import 'package:music_app/providers/pick-playlist.provider.dart';
-import 'package:music_app/providers/purchased.provider.dart';
+import 'package:music_app/providers/point_provider.dart';
 import 'package:music_app/routes.dart';
 import 'package:music_app/theme.dart';
 import 'package:music_app/widgets/BottomPlayBar.dart';
@@ -16,12 +16,16 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final unlockPackages = ref.watch(unlockPackagesNotifierProvider);
+    final unlockPackages = ref.watch(packagesProvider).unlockedPackages;
     final isAuth = ref.watch(authControllerProvider).isAuth;
-    final unlock =
-        ref.watch(unlockPackagesNotifierProvider.notifier).unlockPackage;
+    final unlock = ref.watch(packagesProvider.notifier).unlockPackage;
+    final points = ref.watch(pointProvider).point;
+    final updatePoint = ref.watch(pointProvider.notifier).updatePoint;
     void _onTap(Package package) {
-      if (!isAuth) {
+      if (package.price == 0) {
+        ref.read(pickPlaylistProvider.notifier).setPackage(package);
+        Navigator.pushNamed(context, "/package");
+      } else if (!isAuth) {
         _showUnlockDialog(context, () {
           Navigator.pushNamed(context, Routes.login);
         }, "Bạn cần đăng nhập để xem nội dung package và nghe playlist này",
@@ -29,9 +33,18 @@ class HomePage extends ConsumerWidget {
       } else if (!unlockPackages.contains(package)) {
         //If the package is not unlocked, show the alert
         _showUnlockDialog(context, () {
-          unlock(package);
+          if (isAuth && points >= package.price) {
+            updatePoint(context, points - package.price);
+            unlock(package, context);
+          } else {
+            //snackbar
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text("Bạn không đủ điểm để mua gói này"),
+              duration: Duration(seconds: 2),
+            ));
+          }
         }, "Bạn cần mua gói để xem nội dung package và nghe playlist này",
-            "Mua ngay");
+            "Mua ngay (-${package.price})");
       } else {
         ref.read(pickPlaylistProvider.notifier).setPackage(package);
         Navigator.pushNamed(context, "/package");
@@ -39,16 +52,27 @@ class HomePage extends ConsumerWidget {
     }
 
     void _onTapPlaylist(Playlist playlist, Package package) {
-      if (!isAuth) {
+      if (package.price == 0) {
+        ref.read(pickPlaylistProvider.notifier).setPlaylist(playlist);
+        Navigator.pushNamed(context, "/playlist");
+      } else if (!isAuth) {
         _showUnlockDialog(context, () {
           Navigator.pushNamed(context, Routes.login);
         }, "Bạn cần đăng nhập để xem nội dung package và nghe playlist này",
             "Đăng nhập");
       } else if (!unlockPackages.contains(package)) {
         _showUnlockDialog(context, () {
-          unlock(package);
+          if (isAuth && points >= package.price) {
+            updatePoint(context, points - package.price);
+            unlock(package, context);
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text("Bạn không đủ điểm để mua gói này"),
+              duration: Duration(seconds: 2),
+            ));
+          }
         }, "Bạn cần mua gói để xem nội dung package và nghe playlist này",
-            "Mua ngay");
+            "Mua ngay (-${package.price})");
       } else {
         ref.read(pickPlaylistProvider.notifier).setPlaylist(playlist);
         Navigator.pushNamed(context, "/playlist");
@@ -107,8 +131,9 @@ class HomePage extends ConsumerWidget {
                                       //If the package is not unlocked, show the lock icon
                                       Row(
                                         children: [
-                                          if (!unlockPackages
-                                              .contains(packages[pIndex]))
+                                          if (packages[pIndex].price != 0 &&
+                                              !unlockPackages
+                                                  .contains(packages[pIndex]))
                                             const Icon(
                                               Icons.lock_rounded,
                                               size: 18,

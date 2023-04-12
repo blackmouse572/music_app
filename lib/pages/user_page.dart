@@ -32,8 +32,11 @@ class UserPage extends ConsumerWidget {
                     width: double.infinity,
                     child: Column(
                       children: [
-                        Text('Điểm',
-                            style: Theme.of(context).textTheme.bodyMedium),
+                        GestureDetector(
+                          onLongPress: () => _addPoint(),
+                          child: Text('Điểm',
+                              style: Theme.of(context).textTheme.bodyMedium),
+                        ),
                         Text(
                           points.toString(),
                           // "0",
@@ -44,27 +47,23 @@ class UserPage extends ConsumerWidget {
                   ),
                   const SizedBox(height: 20),
                   //User info
-                  Container(
+                  SizedBox(
                     height: 200,
                     width: double.infinity,
                     child: Column(children: [
-                      Text('Email: ${user?.email}'),
-                      Text('UID: ${user?.uid}'),
-                      ButtonBar(
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              _addPoint();
-                            },
-                            child: const Text('+1 điểm'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              signOut();
-                            },
-                            child: const Text('Đăng xuất'),
-                          ),
-                        ],
+                      Text(
+                        'Email: ${user?.email}',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      Text(
+                        'UID: ${user?.uid}',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          signOut();
+                        },
+                        child: const Text('Đăng xuất'),
                       ),
                     ]),
                   ),

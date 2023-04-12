@@ -51,8 +51,13 @@ class PointProvider extends StateNotifier<PointState> {
   }
 
   void addPoint(BuildContext context) {
-    state = state.copyWith(point: state.point + 1);
+    state = state.copyWith(point: state.point + 100);
     _userRepository.updatePoints(state.user!.uid, state.point, context);
+  }
+
+  void updatePoint(BuildContext context, int newpoint) {
+    _userRepository.updatePoints(state.user!.uid, state.point, context);
+    state = state.copyWith(point: newpoint);
   }
 
   Future<void> getPoint() async {

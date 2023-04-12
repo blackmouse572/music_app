@@ -80,7 +80,10 @@ class UserRepository {
 //create new user point document
   void registerUserPoint(String userId) {
     try {
-      _store.collection('users').doc(userId).set({'points': 0});
+      _store
+          .collection('users')
+          .doc(userId)
+          .set({'points': 0, 'unlockPackages': []});
     } on Exception catch (e, st) {
       debugPrintStack(label: e.toString(), stackTrace: st);
     }

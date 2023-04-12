@@ -55,7 +55,7 @@ class TrackPage extends ConsumerWidget {
                         width: 200,
                         decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: NetworkImage(track!.coverUrl),
+                              image: NetworkImage(track.coverUrl),
                               fit: BoxFit.cover,
                             ),
                             borderRadius:

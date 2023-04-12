@@ -5,7 +5,6 @@ import 'package:music_app/pages/user_page.dart';
 import 'package:music_app/providers/audio-player.provider.dart';
 import 'package:music_app/providers/auth.provider.dart';
 import 'package:music_app/providers/packages.provider.dart';
-import 'package:music_app/providers/purchased.provider.dart';
 
 import '../models/package.model.dart';
 import '../providers/pick-playlist.provider.dart';
@@ -31,7 +30,7 @@ class PurchasedPage extends ConsumerWidget {
 
     final track = ref.watch(audioPlayerProvider).track;
     final List<Package> unlockPackages =
-        ref.watch(unlockPackagesNotifierProvider);
+        ref.watch(packagesProvider).unlockedPackages;
 
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
